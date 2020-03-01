@@ -18,3 +18,6 @@ Route::get('/', function () {
 // Product routes
 Route::get('/boutique', 'ProductController@index')->name('products.index');
 Route::get('/boutique/{slug}', 'ProductController@show')->name('products.show');
+
+// Cart routes
+Route::post('/panier/ajouter', 'CartController@store')->name('cart.store');
