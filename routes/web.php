@@ -22,11 +22,8 @@ Route::get('/boutique/{slug}', 'ProductController@show')->name('products.show');
 // Cart routes
 Route::get('/panier', 'CartController@index')->name('cart.index');
 Route::post('/panier/ajouter', 'CartController@store')->name('cart.store');
+Route::patch('/panier/{rowId}', 'CartController@update')->name('cart.update');
 Route::delete('/panier/{id}', 'CartController@destroy')->name('cart.destroy');
-
-Route::get('/videpanier', function () {
-    Cart::destroy();
-});
 
 //checkout routes
 Route::get('/paiement', 'CheckoutController@index')->name('checkout.index');

@@ -201,6 +201,12 @@ h1, h2, h3, h4, h5, h6 {
     </div>
   @endif
 
+  @if(session('danger'))
+    <div class="alert alert-danger">
+        {{ session('danger') }}
+    </div>
+  @endif
+
   <!--
     <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
     <div class="col-md-6 px-0">
