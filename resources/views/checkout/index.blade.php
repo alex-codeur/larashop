@@ -9,19 +9,20 @@
 @endsection
 
 @section('content')
-    <div class="col-md-12">
-        <h1>Page de paiement</h1>
+    <div class="col-md-12 text-center">
+        <a class="btn btn-secondary" href="{{ route('cart.index') }}">Revenir au panier</a>
+        <h1>Procéder au paiement</h1>
 
         <div class="row">
-            <div class="col-md-6">
-                <form id="payment-form" class="my-4" action="{{ route('checkout.store') }}" method="POST">
+            <div class="col-md-12 text-center">
+                <form id="payment-form" class="my-4 text-center" action="{{ route('checkout.store') }}" method="POST">
                     @csrf
                     <div id="card-element">
 
                     </div>
                     <div id="card-errors" role="alert"></div>
 
-                    <button class="btn btn-success mt-4" id="submit">Procéder au payment ({{ getPrice(Cart::total()) }})</button>
+                    <button class="btn btn-success mt-4" id="submit"><i class="fa fa-money-check mr-2"></i>Payer maintenant ({{ getPrice(Cart::total()) }})</button>
                 </form>
             </div>
         </div>
