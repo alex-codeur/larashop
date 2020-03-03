@@ -17,6 +17,10 @@ class CheckoutController extends Controller
      */
     public function index()
     {
+        if(Cart::count() <= 0) {
+            return redirect()->route('products.index');
+        }
+        
         Stripe::setApiKey('sk_test_M2KhwPvUBwB0bXMz8GuDIeBe00jYCgMDmD');
 
         $intent = PaymentIntent::create([
@@ -51,7 +55,11 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Cart::destroy();
+        
+        $data = $request->json()->all();
+
+        return $data['paymentIntent'];
     }
 
     /**
