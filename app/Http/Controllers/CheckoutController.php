@@ -9,6 +9,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 use App\Order;
+use App\Product;
 use DateTime;
 
 class CheckoutController extends Controller
@@ -58,6 +59,12 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
+        if ($this->checkIfNotAvailable()) {
+            //renvoyer erreur
+            Session::flash('danger', 'Un produit dans votre panier n\'est plus disponible.');
+            return response()->json(['success' => false], 400);
+        }
+
         $data = $request->json()->all();
 
         $order = new Order();
@@ -84,6 +91,8 @@ class CheckoutController extends Controller
         $order->save();
 
         if ($data['paymentIntent']['status'] === 'succeeded') {
+            $this->updateStock();
+
             Cart::destroy();
             Session::flash('success', 'Votre commande a été traitée avec succès.');
             return response()->json(['success' => 'Payment Intent succeeded']);
@@ -140,5 +149,29 @@ class CheckoutController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function checkIfNotAvailable()
+    {
+        foreach (Cart::content() as $item) 
+        {
+            $product = Product::find($item->model->id);
+
+            if ($product->stock < $item->qty) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function updateStock()
+    {
+        foreach (Cart::content() as $item) 
+        {
+            $product = Product::find($item->model->id);
+
+            $product->update(['stock' => $product->stock - $item->qty]);
+        }
     }
 }

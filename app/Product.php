@@ -7,6 +7,8 @@ use App\Category;
 
 class Product extends Model
 {
+    protected $fillable = ['stock'];
+
     public function getPrice()
     {
         $price = $this->price / 100;
