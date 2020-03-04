@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Product;
+use App\Coupon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -52,6 +53,24 @@ class CartController extends Controller
             ->associate(Product::class);
 
         return redirect()->route('products.index')->with('success', 'Le produit a bien été ajouté.');
+    }
+
+    public function storeCoupon(Request $request)
+    {
+        $code = $request->get('code');
+
+        $coupon = Coupon::where('code', $code)->first();
+
+        if (!$coupon) {
+            return redirect()->back()->with('danger', 'Le coupon est invalide.');
+        }
+
+        $request->Session()->put('coupon', [
+            'code' => $coupon->code,
+            'remise' => $coupon->discount(Cart::subtotal())
+        ]);
+
+        return redirect()->back()->with('success', 'Le coupon est appliqué.');
     }
 
     /**
@@ -119,5 +138,12 @@ class CartController extends Controller
         Cart::remove($rowId);
 
         return back()->with('success', 'Le produit a été supprimé.');
+    }
+
+    public function destroyCoupon()
+    {
+        request()->session()->forget('coupon');
+
+        return redirect()->back()->with('success', 'Le coupon a été retiré.');
     }
 }

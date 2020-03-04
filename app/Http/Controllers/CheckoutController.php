@@ -27,8 +27,14 @@ class CheckoutController extends Controller
         
         Stripe::setApiKey('sk_test_M2KhwPvUBwB0bXMz8GuDIeBe00jYCgMDmD');
 
+        if (request()->session()->has('coupon')) {
+            $total = (Cart::subtotal() - request()->session()->get('coupon')['remise']) +(Cart::subtotal() - request()->session()->get('coupon')['remise']) * (config('cart.tax') / 100);
+        } else {
+            $total = Cart::total();
+        }
+
         $intent = PaymentIntent::create([
-            'amount' => round(Cart::total()),
+            'amount' => round($total),
             'currency' => 'eur',
             // Verify your integration in this guide by including this parameter
             'metadata' => ['integration_check' => 'accept_a_payment'],
@@ -37,7 +43,8 @@ class CheckoutController extends Controller
         $clientSecret = Arr::get($intent, 'client_secret');
 
         return view('checkout.index', [
-            'clientSecret' => $clientSecret
+            'clientSecret' => $clientSecret,
+            'total' => $total
         ]);
     }
 

@@ -22,7 +22,7 @@
                     </div>
                     <div id="card-errors" role="alert"></div>
 
-                    <button class="btn btn-success mt-4" id="submit"><i class="fa fa-money-check mr-2"></i>Payer maintenant ({{ getPrice(Cart::total()) }})</button>
+                    <button class="btn btn-success mt-4" id="submit"><i class="fa fa-money-check mr-2"></i>Payer maintenant ({{ getPrice($total) }})</button>
                 </form>
             </div>
         </div>
