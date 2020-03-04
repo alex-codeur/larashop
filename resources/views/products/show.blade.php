@@ -8,7 +8,7 @@
           <strong class="d-inline-block mb-2 text-primary">Design</strong>
           <h5 class="mb-0">{{ $product->title }}</h5>
           <div class="mb-1 text-muted">{{ $product->created_at->format('d/m/Y') }}</div>
-          <p class="card-text mb-auto">{{ $product->description }}</p>
+          <p class="card-text mb-auto">{!! $product->description !!}</p>
           <strong class="mb-auto">{{ $product->getPrice() }}</strong>
 
           <form action="{{ route('cart.store') }}" method="POST">
@@ -19,7 +19,7 @@
           </form>
         </div>
         <div class="col-auto d-none d-lg-block">
-          <img src="{{ $product->image }}">
+          <img width="200" height="250" src="{{ asset('storage/' . $product->image) }}">
         </div>
       </div>
     </div>
