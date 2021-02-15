@@ -1,6 +1,10 @@
-<form action="{{ route('products.search') }}" class="d-flex mr-3">
-    <div class="form-group mb-0 mr-1">
-        <input type="text" name="q" class="form-control" value="{{ request()->q ?? '' }}">
+<form action="{{ route('products.search') }}" class="pt-2">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Recherche..." id="search-item" name="q" value="{{ request()->q ?? '' }}">
+        <div class="input-group-prepend">
+            <span class="input-group-text search-box">
+                <i class="fas fa-search"></i>
+            </span>
+        </div>
     </div>
-    <button type="submit" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
 </form>

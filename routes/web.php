@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ProductController@index')->name('products.index');
 
 // Product routes
 Route::get('/boutique', 'ProductController@index')->name('products.index');
